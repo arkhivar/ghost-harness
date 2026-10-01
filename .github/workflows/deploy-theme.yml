@@ -24,7 +24,7 @@ concurrency:
 
 jobs:
     deploy:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-24.04
         steps:
             # Do nothing (and stay green) until you have added the two secrets.
             - name: Check secrets
