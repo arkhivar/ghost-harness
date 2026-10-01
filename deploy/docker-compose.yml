@@ -1,0 +1,80 @@
+# Ghost 6 + MySQL + Caddy (automatic HTTPS).
+#
+#   cd deploy
+#   cp .env.example .env     # then edit it
+#   docker compose up -d
+#
+# Based on the layout of Ghost's official Docker setup (github.com/TryGhost/ghost-docker),
+# without the optional analytics and ActivityPub services. See ../_DEPLOYMENT.md.
+
+name: ghost-harness
+
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "${HTTP_PORT:-80}:80"
+      - "${HTTPS_PORT:-443}:443"
+      - "${HTTPS_PORT:-443}:443/udp" # HTTP/3
+    environment:
+      DOMAIN: ${DOMAIN:?Set DOMAIN in .env}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data # certificates live here, keep it
+      - caddy_config:/config
+    depends_on:
+      - ghost
+    networks:
+      - ghost_network
+
+  ghost:
+    image: ghost:${GHOST_VERSION:-6-alpine}
+    restart: unless-stopped
+    # Everything in .env is passed to Ghost. That is how the mail__* settings reach it.
+    # Keep .env out of git (the repository .gitignore already does).
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      url: https://${DOMAIN:?Set DOMAIN in .env}
+      database__client: mysql
+      database__connection__host: db
+      database__connection__user: ghost
+      database__connection__password: ${DATABASE_PASSWORD:?Set DATABASE_PASSWORD in .env}
+      database__connection__database: ghost
+    volumes:
+      - ${CONTENT_LOCATION:-./data/ghost}:/var/lib/ghost/content
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - ghost_network
+
+  db:
+    image: mysql:${MYSQL_VERSION:-8.4}
+    restart: unless-stopped
+    environment:
+      # Ghost only needs the unprivileged "ghost" user, so the root password is random
+      # and never stored. Back up with the ghost user (see _DEPLOYMENT.md).
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_USER: ghost
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD:?Set DATABASE_PASSWORD in .env}
+      MYSQL_DATABASE: ghost
+    volumes:
+      - ${MYSQL_DATA_LOCATION:-./data/mysql}:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u ghost --password=$$MYSQL_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    networks:
+      - ghost_network
+
+volumes:
+  caddy_data:
+  caddy_config:
+
+networks:
+  ghost_network:

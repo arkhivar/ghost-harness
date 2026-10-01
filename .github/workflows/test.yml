@@ -35,3 +35,23 @@ jobs:
 
             # The theme zip must build
             - run: npm run pack
+
+    deploy-files:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v7
+
+            # The Docker stack must parse with the example settings
+            - name: Validate docker-compose.yml
+              working-directory: deploy
+              run: |
+                  cp .env.example .env
+                  docker compose config --quiet
+
+            # The Caddyfile must be valid
+            - name: Validate Caddyfile
+              working-directory: deploy
+              run: |
+                  docker run --rm -e DOMAIN=harness.example.com \
+                      -v "$PWD/Caddyfile:/etc/caddy/Caddyfile:ro" \
+                      caddy:2-alpine caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile

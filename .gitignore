@@ -5,3 +5,5 @@ dist/
 !.env.example
 *.zip
 .DS_Store
+# Docker deployment data (database, uploads, certificates)
+deploy/data/

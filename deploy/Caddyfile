@@ -1,0 +1,26 @@
+# Caddy obtains and renews the TLS certificate for {$DOMAIN} by itself.
+# Requirements: DNS A/AAAA record for the domain points at this server,
+# and ports 80 and 443 are reachable from the internet.
+
+{$DOMAIN} {
+	encode zstd gzip
+
+	reverse_proxy ghost:2368
+
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+
+	log {
+		output stdout
+		format console
+	}
+}
+
+# Optional: redirect www to the bare domain. Needs a DNS record for www as well.
+# www.{$DOMAIN} {
+# 	redir https://{$DOMAIN}{uri} permanent
+# }

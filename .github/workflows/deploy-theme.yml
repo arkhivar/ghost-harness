@@ -26,18 +26,35 @@ jobs:
     deploy:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v7
+            # Do nothing (and stay green) until you have added the two secrets.
+            - name: Check secrets
+              id: secrets
+              env:
+                  GHOST_URL: ${{ secrets.GHOST_ADMIN_API_URL }}
+                  GHOST_KEY: ${{ secrets.GHOST_ADMIN_API_KEY }}
+              run: |
+                  if [ -n "$GHOST_URL" ] && [ -n "$GHOST_KEY" ]; then
+                      echo "configured=true" >> "$GITHUB_OUTPUT"
+                  else
+                      echo "::notice::GHOST_ADMIN_API_URL or GHOST_ADMIN_API_KEY is not set, skipping deploy. See _DEPLOYMENT.md."
+                  fi
 
-            - uses: actions/setup-node@v7
+            - if: steps.secrets.outputs.configured == 'true'
+              uses: actions/checkout@v7
+
+            - if: steps.secrets.outputs.configured == 'true'
+              uses: actions/setup-node@v7
               with:
                   node-version: 22
 
             # Build our own zip so only theme files ship (not scripts, tests, seed data or docs).
-            - run: npm run pack
+            - if: steps.secrets.outputs.configured == 'true'
+              run: npm run pack
 
             # The action only uploads. If the theme is already active, the upload replaces it live.
             # On the very first deploy, activate it once in Ghost Admin (Settings, Design).
             - name: Upload theme to Ghost
+              if: steps.secrets.outputs.configured == 'true'
               uses: TryGhost/action-deploy-theme@v2
               with:
                   api-url: ${{ secrets.GHOST_ADMIN_API_URL }}
