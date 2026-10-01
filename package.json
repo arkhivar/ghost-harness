@@ -26,6 +26,7 @@
     "gscan": "gscan .",
     "snippet": "node scripts/build-snippet.mjs",
     "snippet:check": "node scripts/build-snippet.mjs --check",
+    "snippet:sync": "node scripts/snippet-sync.mjs",
     "check": "npm test && npm run snippet:check && npm run gscan",
     "seed": "node scripts/seed.mjs",
     "lint:facts": "node scripts/lint.mjs",
@@ -63,7 +64,7 @@
           "Dark"
         ],
         "default": "System",
-        "description": "Colour scheme before a visitor picks one with the toggle."
+        "description": "Color scheme before a visitor picks one with the toggle."
       },
       "matrix_heading": {
         "type": "text",

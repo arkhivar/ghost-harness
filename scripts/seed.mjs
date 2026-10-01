@@ -11,7 +11,8 @@
 // Existing posts are skipped unless --update is given, so the script is safe to re-run.
 //
 // Not handled here: the editor Snippet. Ghost refuses Snippet access to integration
-// tokens (403), so create it once by hand. See _GUIDE.md.
+// tokens (403), so create it once by hand or with `npm run snippet:sync` and a staff
+// access token. See _GUIDE.md.
 
 import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
@@ -78,7 +79,7 @@ async function main() {
         }
     }
     console.log(`\nDone: ${counts.created} created, ${counts.updated} updated, ${counts.skipped} skipped.`);
-    console.log("Next: create the 'Harness facts' Snippet by hand (see _GUIDE.md), then run: npm run lint:facts");
+    console.log("Next: create the 'Harness facts' Snippet (by hand, or npm run snippet:sync; see _GUIDE.md), then run: npm run lint:facts");
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
