@@ -210,7 +210,7 @@ function buildSkeleton() {
     const findRow = el("div", "controls-row");
     const search = el("input", "search");
     search.type = "search";
-    search.placeholder = "Filter by name, maker, license…";
+    search.placeholder = "Filter by name or maker…";
     search.setAttribute("aria-label", "Filter harnesses");
     search.setAttribute("data-focus-id", "search");
     findRow.append(search);
@@ -241,7 +241,8 @@ function buildSkeleton() {
     status.setAttribute("role", "status");
     status.setAttribute("aria-live", "polite");
     findRow.append(status);
-    controls.append(findRow, needRow);
+    const hint = el("p", "hint", "Tick up to four harnesses to compare them side by side.");
+    controls.append(findRow, needRow, hint);
 
     // Table
     const tableWrap = el("div", "table-scroll");
@@ -405,7 +406,8 @@ function card(title, headline, note, sources) {
         line.append(headline);
         node.append(line);
     }
-    node.append(note ? el("p", "", note) : el("p", "none", "No notes yet."));
+    if (note) node.append(el("p", "", note));
+    else if (!headline) node.append(el("p", "none", "No notes yet."));
     const list = sourceList(sources);
     if (list) node.append(list);
     return node;
@@ -425,7 +427,7 @@ function buildDetail(item) {
         for (const key of ["plan", "web", "browser"]) {
             grid.append(card(FIELD_BY_KEY[key].label, valueNode(FIELD_BY_KEY[key], f[key]), f[key].note, f[key].sources));
         }
-        const server = el("span", "cell-level");
+        const server = el("span", "pair");
         server.append(el("span", "label", "Server"), yesNo(f.server.v), el("span", "label", "Headless"), yesNo(f.headless.v));
         grid.append(card("Server and headless", server, f.server.note, f.server.sources));
         grid.append(card("Approvals and autonomy", f.approvals.v ? el("span", "", f.approvals.text) : null, f.approvals.note, f.approvals.sources));
@@ -435,7 +437,7 @@ function buildDetail(item) {
         models.append(el("p", "", f.byo.v ? `Models: ${f.byo.text}` : "Models: unknown"));
         models.append(el("p", "", f.license.v ? `License: ${f.license.text}` : "License: unknown"));
         if (f.interfaces.v) {
-            const tags = el("ul");
+            const tags = el("ul", "tags");
             for (const name of f.interfaces.v) tags.append(el("li", "", name));
             models.append(tags);
         }

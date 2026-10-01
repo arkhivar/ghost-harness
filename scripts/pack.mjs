@@ -2,8 +2,9 @@
 // Builds dist/ghost-harness.zip containing only what Ghost needs, ready for
 // Ghost Admin, Settings, Design, Change theme, Upload theme.
 //
-// Uses the system `zip` command (macOS, Linux and WSL have it). The GitHub Actions
-// deploy workflow does not need this script: the deploy action zips the theme itself.
+// Uses the system `zip` command (macOS, Linux and WSL have it). The GitHub Actions deploy
+// workflow also runs this script, then hands the zip to TryGhost/action-deploy-theme via its
+// `file` input, so only theme files ever reach your site.
 
 import { execFileSync } from "node:child_process";
 import { mkdirSync, rmSync } from "node:fs";

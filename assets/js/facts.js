@@ -182,6 +182,21 @@ function visibleText(element) {
     return copy.textContent;
 }
 
+// Note text without the link labels: links are returned separately as `sources`, and listing them
+// twice is noise. Tidies the punctuation that links leave behind, such as "()" or "· ·".
+export function proseWithoutLinks(element) {
+    const copy = element.cloneNode(true);
+    copy.querySelectorAll("script, style, template, noscript").forEach((node) => node.remove());
+    copy.querySelectorAll("a").forEach((node) => node.replaceWith(" "));
+    return clean(copy.textContent)
+        .replace(/\(\s*\)|\[\s*\]/g, "")
+        .replace(/(?:\s*·\s*){2,}/g, " · ")
+        .replace(/^\s*·\s*|\s*·\s*$/g, "")
+        .replace(/\s+([.,;:])/g, "$1")
+        .replace(/\s{2,}/g, " ")
+        .trim();
+}
+
 // root: a Document, DocumentFragment or Element (for example a <template>'s content).
 export function parseFactsRoot(root, baseUrl) {
     const blocks = root.querySelectorAll("[data-harness-facts]");
@@ -209,7 +224,7 @@ export function parseFactsRoot(root, baseUrl) {
                 !cells.some((cell) => cell.hasAttribute("rowspan") || cell.hasAttribute("colspan")),
             dataV: valueCell?.getAttribute("data-v") ?? "",
             valueText: valueCell ? visibleText(valueCell) : "",
-            noteText: noteCell ? visibleText(noteCell) : "",
+            noteText: noteCell ? proseWithoutLinks(noteCell) : "",
             links: cells.slice(1).flatMap((cell) =>
                 [...cell.querySelectorAll("a[href]")].map((link) => ({ href: link.getAttribute("href"), label: visibleText(link) })),
             ),

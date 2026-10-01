@@ -9,6 +9,7 @@ import {
     compareFacts,
     normalizeFactRows,
     parseFactsHtml,
+    proseWithoutLinks,
     safeHref,
     sameFact,
 } from "../assets/js/facts.js";
@@ -141,4 +142,18 @@ test("parseFactsHtml ignores script and template content inside value cells", ()
         "<td>MIT<script>alert(1)</script><template>hidden</template></td>",
     );
     assert.equal(parseFactsHtml(html, base).fields.license.text, "MIT");
+});
+
+test("note text drops link labels and the punctuation they leave behind", () => {
+    const cell = (html) => new JSDOM(`<table><tr><td>${html}</td></tr></table>`).window.document.querySelector("td");
+    assert.equal(proseWithoutLinks(cell('Initial dataset. Sources: <a href="https://a.example/">A</a> · <a href="https://b.example/">B</a>')), "Initial dataset. Sources:");
+    assert.equal(proseWithoutLinks(cell('Documented in the guide (<a href="https://a.example/">guide</a>).')), "Documented in the guide.");
+    assert.equal(proseWithoutLinks(cell('Plain   note <script>alert(1)</script>with spaces')), "Plain note with spaces");
+});
+
+test("parseFactsHtml returns sources separately from the note prose", () => {
+    const html = renderFactsBlock({ plan: { v: 3, text: "Native", note: "Shift+Tab toggles it.", sources: [{ label: "Docs", href: "https://docs.example/plan" }] } });
+    const plan = parseFactsHtml(html, base).fields.plan;
+    assert.equal(plan.note, "Shift+Tab toggles it.");
+    assert.deepEqual(plan.sources, [{ href: "https://docs.example/plan", label: "Docs" }]);
 });

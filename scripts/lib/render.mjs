@@ -89,18 +89,10 @@ export function seedToValues(harness) {
 }
 
 export function renderPostHtml(harness) {
-    const facts = harness.facts;
-    const note = (key) => (facts[key] && typeof facts[key] === "object" ? facts[key].note : "");
-    const sections = [
-        ["Plan mode", note("plan")],
-        ["Web UI and remote access", note("web")],
-        ["Browser use", note("browser")],
-        ["Server and headless use", note("server")],
-        ["Approvals and autonomy", facts.approvals],
-        ["Our take", harness.take],
-    ].filter(([, text]) => text);
-
-    const body = sections.map(([title, text]) => `<h2>${esc(title)}</h2>\n<p>${esc(text)}</p>`).join("\n");
+    // The summary is the post excerpt (shown in the header) and the per-field notes live in the facts
+    // block, so the prose here stays short. Replace or extend it with your own write-up, and keep the
+    // facts card at the end.
+    const take = harness.take ? `<h2>Take</h2>\n<p>${esc(harness.take)}</p>\n` : "";
     const block = renderFactsBlock(seedToValues(harness));
-    return `<p>${esc(harness.summary)}</p>\n${body}\n<!--kg-card-begin: html-->\n${block}\n<!--kg-card-end: html-->`;
+    return `${take}<!--kg-card-begin: html-->\n${block}\n<!--kg-card-end: html-->`;
 }

@@ -1,0 +1,37 @@
+name: Test
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+
+permissions:
+    contents: read
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v7
+
+            - uses: actions/setup-node@v7
+              with:
+                  node-version: 22
+                  cache: npm
+
+            - run: npm ci
+
+            # Unit tests for the facts schema and parser
+            - run: npm test
+
+            # The committed snippet must match what the generator produces
+            - run: npm run snippet:check
+
+            # Seed data must produce valid facts blocks (no network needed)
+            - run: node scripts/seed.mjs --dry-run
+
+            # Ghost's official theme validator
+            - run: npm run gscan
+
+            # The theme zip must build
+            - run: npm run pack

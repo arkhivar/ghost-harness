@@ -1,0 +1,45 @@
+name: Deploy theme
+
+# Uploads the theme to your Ghost site after every push to main that touches theme files.
+# Requires two repository secrets: GHOST_ADMIN_API_URL and GHOST_ADMIN_API_KEY.
+# See _DEPLOYMENT.md for how to create them.
+
+on:
+    push:
+        branches: [main]
+        paths:
+            - "assets/**"
+            - "partials/**"
+            - "*.hbs"
+            - "package.json"
+            - ".github/workflows/deploy-theme.yml"
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+concurrency:
+    group: deploy-theme
+    cancel-in-progress: false
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v7
+
+            - uses: actions/setup-node@v7
+              with:
+                  node-version: 22
+
+            # Build our own zip so only theme files ship (not scripts, tests, seed data or docs).
+            - run: npm run pack
+
+            # The action only uploads. If the theme is already active, the upload replaces it live.
+            # On the very first deploy, activate it once in Ghost Admin (Settings, Design).
+            - name: Upload theme to Ghost
+              uses: TryGhost/action-deploy-theme@v2
+              with:
+                  api-url: ${{ secrets.GHOST_ADMIN_API_URL }}
+                  api-key: ${{ secrets.GHOST_ADMIN_API_KEY }}
+                  file: dist/ghost-harness.zip
