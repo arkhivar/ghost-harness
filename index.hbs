@@ -1,0 +1,10 @@
+{{!< default}}
+
+<main id="main" class="wrap archive">
+    <header class="archive-header">
+        <p class="eyebrow">Archive</p>
+        <h1 class="archive-title">{{@site.title}}</h1>
+    </header>
+    <ul class="post-list">{{#foreach posts}}{{> "post-card"}}{{/foreach}}</ul>
+    {{pagination}}
+</main>

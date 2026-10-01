@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="{{@site.locale}}" class="no-js" data-default-scheme="{{@custom.color_scheme}}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{meta_title}}</title>
+
+    {{!-- Resolve the colour scheme before first paint to avoid a flash. --}}
+    <script>
+        (function (doc) {
+            var root = doc.documentElement, scheme = (root.getAttribute("data-default-scheme") || "system").toLowerCase(), saved = null;
+            try { saved = localStorage.getItem("harness-scheme"); } catch (error) { /* storage can be blocked */ }
+            scheme = saved || scheme;
+            if (scheme !== "light" && scheme !== "dark") scheme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+            root.setAttribute("data-theme", scheme);
+            root.className = root.className.replace("no-js", "js");
+        })(document);
+    </script>
+
+    <link rel="stylesheet" href="{{asset "css/theme.css"}}">
+    {{#is "home"}}<link rel="stylesheet" href="{{asset "css/matrix.css"}}">{{/is}}
+
+    {{!-- Import map: modules import "harness-facts", which resolves to the versioned asset URL.
+          Ghost caches /assets/ for a year and busts the cache with ?v=. A bare relative import
+          would skip that query string and serve stale code after a theme update. --}}
+    <script type="importmap">{"imports":{"harness-facts":"{{asset "js/facts.js"}}","harness-ui":"{{asset "js/ui.js"}}"}}</script>
+
+    {{ghost_head}}
+</head>
+<body class="{{body_class}}">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    {{> "header"}}
+
+    {{{body}}}
+
+    {{> "footer"}}
+
+    {{ghost_foot}}
+    <script type="module" src="{{asset "js/theme.js"}}"></script>
+    {{#is "home"}}<script type="module" src="{{asset "js/matrix.js"}}"></script>{{/is}}
+    {{#is "post"}}<script type="module" src="{{asset "js/post-facts.js"}}"></script>{{/is}}
+</body>
+</html>

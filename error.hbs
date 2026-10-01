@@ -1,0 +1,8 @@
+{{!< default}}
+
+<main id="main" class="wrap error-page">
+    <p class="eyebrow">Error {{statusCode}}</p>
+    <h1 class="archive-title">{{#if (match statusCode "404")}}That page is not in the directory.{{else}}Something went wrong.{{/if}}</h1>
+    <p class="lede">{{message}}</p>
+    <p><a class="text-link" href="{{@site.url}}">&larr; Back to the matrix</a></p>
+</main>

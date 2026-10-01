@@ -1,0 +1,23 @@
+# Optional: pretty URLs for the directory.
+#
+# With this file, harness posts live under /harness/<slug>/ and every other post stays at /<slug>/.
+# Upload it in Ghost Admin: Settings, Labs, Routes (Beta), Upload routes YAML.
+# The theme works without it: posts then use Ghost's default /<slug>/ URLs.
+#
+# Docs: https://docs.ghost.org/themes/routing
+
+routes:
+
+collections:
+  /harness/:
+    permalink: /harness/{slug}/
+    template: index
+    filter: tag:hash-harness
+  /:
+    permalink: /{slug}/
+    template: index
+    filter: tag:-hash-harness
+
+taxonomies:
+  tag: /tag/{slug}/
+  author: /author/{slug}/

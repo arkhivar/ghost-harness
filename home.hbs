@@ -1,0 +1,53 @@
+{{!< default}}
+
+<main id="main" class="matrix-page">
+    <section class="hero wrap">
+        <p class="eyebrow">Harness directory</p>
+        <h1 class="hero-title">{{#if @custom.matrix_heading}}{{@custom.matrix_heading}}{{else}}Which harness fits how you work?{{/if}}</h1>
+        {{#if @custom.matrix_intro}}
+            <p class="lede">{{@custom.matrix_intro}}</p>
+        {{else}}
+            {{#if @site.description}}<p class="lede">{{@site.description}}</p>{{/if}}
+        {{/if}}
+        <p class="hero-meta" data-matrix-meta></p>
+    </section>
+
+    {{!-- Server-side: Ghost queries the harness posts (tagged with the internal tag #harness) and prints each
+          post's full HTML inside an inert <template>. matrix.js reads the facts block from that HTML.
+          Without JavaScript this stays a plain, readable list of harnesses.
+          {{#get}} returns at most 100 posts per query (see _GUIDE.md for what to do beyond that). --}}
+    {{#get "posts" filter="tag:hash-harness" limit="100" order="title asc"}}
+        {{#if posts}}
+            <section class="wrap matrix" id="matrix" aria-label="Harness comparison matrix">
+                <div data-matrix-root></div>
+
+                <ol class="harness-list" data-harness-list>
+                    {{#foreach posts}}
+                        <li class="harness-source" data-harness-source data-slug="{{slug}}" data-url="{{url}}" data-title="{{title}}">
+                            <a class="harness-source-title" href="{{url}}">{{title}}</a>
+                            <p class="harness-source-excerpt">{{#if custom_excerpt}}{{custom_excerpt}}{{else}}{{excerpt words="28"}}{{/if}}</p>
+                            <template data-facts-source>{{content}}</template>
+                        </li>
+                    {{/foreach}}
+                </ol>
+                <noscript><p class="muted small">The sortable matrix needs JavaScript. Every harness above links to a write-up with its full facts table.</p></noscript>
+            </section>
+        {{else}}
+            <section class="wrap matrix-empty">
+                <h2>The matrix is empty</h2>
+                <p>Publish a post tagged <code>#harness</code> and paste the harness facts snippet into it. It will appear here after a refresh.</p>
+            </section>
+        {{/if}}
+    {{/get}}
+
+    {{#if @custom.show_latest_notes}}
+        {{#get "posts" filter="tag:-hash-harness" limit="3"}}
+            {{#if posts}}
+                <section class="wrap notes" aria-labelledby="notes-title">
+                    <h2 id="notes-title" class="section-title">Latest notes</h2>
+                    <ul class="post-list">{{#foreach posts}}{{> "post-card"}}{{/foreach}}</ul>
+                </section>
+            {{/if}}
+        {{/get}}
+    {{/if}}
+</main>

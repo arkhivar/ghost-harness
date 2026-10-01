@@ -1,0 +1,10 @@
+<footer class="site-footer">
+    <div class="wrap site-footer-inner">
+        <div class="footer-brand">
+            <a class="brand" href="{{@site.url}}" aria-label="{{@site.title}}, home">{{> "logo"}}<span class="brand-name">{{@site.title}}</span></a>
+            {{#if @custom.footer_note}}<p class="footer-note">{{@custom.footer_note}}</p>{{/if}}
+        </div>
+        <nav class="footer-nav" aria-label="Footer">{{navigation type="secondary"}}</nav>
+        <p class="footer-meta">&copy; {{date format="YYYY"}} {{@site.title}} · <a href="https://ghost.org/" target="_blank" rel="noopener">Published with Ghost</a></p>
+    </div>
+</footer>

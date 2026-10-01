@@ -1,0 +1,488 @@
+{
+  "$comment": "Initial dataset for the directory. Collected between 2026-09-25 and 2026-10-01. After seeding, the facts block inside each Ghost post is the working source of truth; edit it there. See _SCHEMA.md.",
+  "harnesses": [
+    {
+      "slug": "bb",
+      "title": "bb",
+      "summary": "Local-first agentic IDE that drives Claude Code, Codex, Cursor, OpenCode and any ACP agent on your own subscriptions.",
+      "take": "bb wraps agents that already have their own harness and adds threads, handoffs, automation and plugins around them, which makes it a meta-harness rather than a model harness. The Linux desktop build is an alpha AppImage and Windows runs under WSL2. It combines a native web UI with an experimental browser plugin that can run headless browsers on a remote machine.",
+      "facts": {
+        "type": "Meta-harness",
+        "org": "get-bb",
+        "harness": 9.5,
+        "plan": { "v": 1, "text": "Inherited", "note": "bb has no plan mode of its own. You get whatever the wrapped agent offers, such as OpenCode's Plan agent or Claude Code's plan mode." },
+        "web": { "v": 3, "text": "Native + remote", "note": "The web app is a first-class surface (npx bb-app@latest serves it at localhost:38886). Claiming a handle gives optional browser access at <handle>.getbb.app." },
+        "browser": { "v": 3, "text": "Plugin, headless-ready", "note": "The Browser Automation plugin is marked experimental (added in 0.43.0, 2026-09-11). It lets agents control the bb desktop browser or create headless browsers on a selected machine. It works in the Linux AppImage, and browser discovery works when connected to a remote server. Since 0.43.3, headless sessions show a live preview in chat." },
+        "server": { "v": true, "note": "The HTTP API and WebSocket are first-class ways to drive bb." },
+        "headless": { "v": true },
+        "acp": { "v": true },
+        "mcp": { "v": null },
+        "selfhost": { "v": true },
+        "license": "MIT",
+        "byo": "Agents on your own subscriptions",
+        "interfaces": ["Desktop", "Web", "CLI", "iOS"],
+        "approvals": "Inherited from the wrapped agent",
+        "checked": "2026-10-01"
+      },
+      "sources": [
+        { "label": "getbb.app", "href": "https://getbb.app/" },
+        { "label": "bb README", "href": "https://github.com/get-bb/bb" },
+        { "label": "bb changelog", "href": "https://getbb.app/changelog" },
+        { "label": "bb configuration docs", "href": "https://github.com/get-bb/bb/blob/main/docs/configuration.md" }
+      ]
+    },
+    {
+      "slug": "dify",
+      "title": "Dify",
+      "summary": "Visual workflow and agent orchestration platform. Models are pluggable backends.",
+      "take": "The purest harness in this set: tools, retrieval, memory, routing and observability around any model. It is a workflow platform rather than a coding agent.",
+      "facts": {
+        "type": "Platform",
+        "org": "LangGenius",
+        "harness": 9.5,
+        "plan": { "v": 1, "text": "Design-time", "note": "No interactive plan mode. You plan by building the workflow graph. A community Plan-Executor agent strategy is available on the Marketplace." },
+        "web": { "v": 3, "text": "Web-first", "note": "The whole product is a web dashboard and workflow canvas." },
+        "browser": { "v": 1, "text": "Marketplace plugin", "note": "No built-in browser agent. A community Playwright plugin on the Dify Marketplace runs Playwright scripts from a workflow; its documentation notes that the default port clashes with Dify and must be changed." },
+        "server": { "v": true, "note": "Every app is exposed through an HTTP API." },
+        "headless": { "v": true },
+        "acp": { "v": false },
+        "mcp": { "v": true },
+        "selfhost": { "v": true },
+        "license": "Dify Open Source License (Apache-2.0 plus conditions)",
+        "byo": "Hundreds of models and providers",
+        "interfaces": ["Web", "API"],
+        "approvals": "Workflow-defined, including human-in-the-loop nodes",
+        "checked": "2026-10-01"
+      },
+      "sources": [
+        { "label": "Dify on GitHub", "href": "https://github.com/langgenius/dify" },
+        { "label": "Agent node docs", "href": "https://github.com/langgenius/dify-docs/blob/main/en/guides/workflow/node/agent.md" },
+        { "label": "Plan-Executor strategy", "href": "https://marketplace.dify.ai/plugin/zhou0928/plan-executor-agent" },
+        { "label": "Playwright plugin", "href": "https://marketplace.dify.ai/plugin/hjlarry/playwright" }
+      ]
+    },
+    {
+      "slug": "aionui",
+      "title": "AionUi",
+      "summary": "Desktop and WebUI shell that auto-detects CLI agents (Claude Code, Gemini CLI, any ACP backend) and adds MCP management, team mode and messaging bridges.",
+      "take": "Closest in spirit to bb. The Telegram, Lark, Slack and Discord bridges make it convenient for remote control.",
+      "facts": {
+        "type": "Meta-harness",
+        "org": "iOfficeAI",
+        "harness": 8.5,
+        "plan": { "v": 1, "text": "Inherited + files", "note": "Plan behaviour comes from the wrapped agent. A built-in Planning with Files assistant keeps Manus-style Markdown plans." },
+        "web": { "v": 3, "text": "Native + remote", "note": "AionUi --webui --remote serves a standalone HTTP WebUI for LAN, cross-network and headless-server use, with QR or password login." },
+        "browser": { "v": 1, "text": "Via MCP", "note": "Browser control comes through MCP; the project's MCP guide demonstrates a chrome-devtools MCP server. No built-in browser view is documented." },
+        "server": { "v": true, "note": "WebUI mode runs as a standalone HTTP server." },
+        "headless": { "v": true },
+        "acp": { "v": true },
+        "mcp": { "v": true },
+        "selfhost": { "v": true },
+        "license": "Apache-2.0",
+        "byo": "Agents and models",
+        "interfaces": ["Desktop", "Web", "Telegram", "Lark", "Slack", "Discord"],
+        "approvals": "Inherited from the wrapped agent",
+        "checked": "2026-10-01"
+      },
+      "sources": [
+        { "label": "AionUi on GitHub", "href": "https://github.com/iOfficeAI/AionUi" },
+        { "label": "WebUI guide", "href": "https://github.com/iOfficeAI/AionUi/wiki/WebUI-Configuration-Guide-Chinese" },
+        { "label": "MCP configuration guide", "href": "https://github.com/iOfficeAI/AionUi/wiki/MCP-Configuration-Guide" }
+      ]
+    },
+    {
+      "slug": "opencode",
+      "title": "OpenCode",
+      "summary": "Open-source coding agent with a TUI, a client/server split and swappable providers.",
+      "take": "The baseline for Plan/Build expectations. opencode run covers scripted use, and subagents are invoked with @.",
+      "facts": {
+        "type": "Agent harness",
+        "org": "SST",
+        "harness": 8.5,
+        "plan": { "v": 3, "text": "Native toggle", "note": "Plan (restricted, read-only) and Build agents; switch with Tab. Permissions are set per agent." },
+        "web": { "v": 2, "text": "Native", "note": "opencode web adds a browser client and opencode serve runs the server without the TUI. It binds to 127.0.0.1 by default; use --hostname 0.0.0.0 for network access and set OPENCODE_SERVER_PASSWORD, otherwise the server is unsecured." },
+        "browser": { "v": 2, "text": "Built-in (desktop app)", "note": "The v2 docs describe a browser Code Mode namespace that controls the browser attached by the OpenCode desktop app. For a headless server, Playwright MCP works as a local MCP server and supports --headless." },
+        "server": { "v": true, "note": "opencode serve is an HTTP server and the reference for OpenCode-style server mode." },
+        "headless": { "v": true },
+        "acp": { "v": true },
+        "mcp": { "v": true },
+        "selfhost": { "v": true },
+        "license": "MIT",
+        "byo": "75+ providers",
+        "interfaces": ["TUI", "Web", "CLI", "Server"],
+        "approvals": "Per-agent permission rules (allow, ask, deny)",
+        "checked": "2026-10-01"
+      },
+      "sources": [
+        { "label": "Agents docs", "href": "https://opencode.ai/docs/agents/" },
+        { "label": "Web docs", "href": "https://opencode.ai/docs/web/" },
+        { "label": "Tools (v2 docs)", "href": "https://opencode.ai/v2/docs/tools/" },
+        { "label": "Playwright MCP", "href": "https://github.com/microsoft/playwright-mcp" }
+      ]
+    },
+    {
+      "slug": "goose",
+      "title": "Goose",
+      "summary": "General-purpose agent with CLI and desktop apps and MCP extensions; bring your own LLM.",
+      "take": "Reactive out of the box, because the default permission mode is Completely Autonomous. The closest thing to a plan/execute split is Chat Only or Manual Approval while exploring and Smart Approval while executing, which is a workaround rather than native Plan/Build behaviour.",
+      "facts": {
+        "type": "Agent harness",
+        "org": "Block, now the Agentic AI Foundation",
+        "harness": 8.5,
+        "plan": { "v": 1, "text": "CLI-only / prompt", "note": "The CLI has /plan and /endplan, and a separate planner model can be set with GOOSE_PLANNER_PROVIDER and GOOSE_PLANNER_MODEL. The desktop app has no plan keyword, so you have to ask it not to start work. There is no Plan/Build view toggle." },
+        "web": { "v": 0, "text": "None", "note": "goose web was removed from the official release as of v1.25.0. goose serve exposes ACP over HTTP and WebSocket on 127.0.0.1:3284, which is an API rather than a UI." },
+        "browser": { "v": 1, "text": "Via MCP", "note": "Playwright MCP is documented as a goose extension. The built-in Computer Controller extension covers web scraping and macOS UI automation rather than driving a browser." },
+        "server": { "v": true, "note": "goose serve is an ACP server over HTTP and WebSocket, with no browser UI." },
+        "headless": { "v": true },
+        "acp": { "v": true },
+        "mcp": { "v": true },
+        "selfhost": { "v": true },
+        "license": "Apache-2.0",
+        "byo": "Many providers",
+        "interfaces": ["Desktop", "CLI", "TUI (beta)", "ACP server"],
+        "approvals": "Completely Autonomous (default), Manual Approval, Smart Approval, Chat Only. Switch with /mode in the CLI.",
+        "checked": "2026-10-01"
+      },
+      "sources": [
+        { "label": "Plans guide", "href": "https://goose-docs.ai/docs/guides/context-engineering/creating-plans/" },
+        { "label": "Permission modes", "href": "https://goose-docs.ai/docs/guides/goose-permissions/" },
+        { "label": "CLI commands", "href": "https://goose-docs.ai/docs/guides/goose-cli-commands/" },
+        { "label": "ACP and new TUI", "href": "https://goose-docs.ai/blog/2026/04/08/goose-acp-and-new-tui/" },
+        { "label": "Veria Labs on goose web removal", "href": "https://verialabs.com/blog/securing-open-source-part-1-block-goose/" },
+        { "label": "Playwright extension", "href": "https://goose-docs.ai/docs/mcp/playwright-mcp/" }
+      ]
+    },
+    {
+      "slug": "openhands",
+      "title": "OpenHands",
+      "summary": "Sandboxed autonomous coding agent with a CLI, a self-hosted browser control center (Agent Canvas) and a cloud edition.",
+      "take": "Probably the strongest Goose alternative if you want both a web UI and a real plan step. Agent Canvas can also run Claude Code or Codex over ACP, which makes it partly a meta-harness.",
+      "facts": {
+        "type": "Agent harness + meta",
+        "org": "All Hands AI",
+        "harness": 8.5,
+        "plan": { "v": 3, "text": "Native mode", "note": "Plan Mode writes a structured PLAN.md and waits for approval before code, then you switch to Code mode." },
+        "web": { "v": 3, "text": "Native + remote", "note": "Agent Canvas is the open-source browser control center and runs from npm or Docker. openhands serve launches the full GUI web app, and openhands web serves the CLI's terminal UI in a browser (0.0.0.0:12000 by default). Use an SSH tunnel or a reverse proxy for remote access." },
+        "browser": { "v": 2, "text": "Built-in (SDK tool)", "note": "The SDK ships a BrowserToolSet built on the browser-use library: navigate, click, fill forms and extract content. A live browser view in Agent Canvas could not be confirmed from the current documentation." },
+        "server": { "v": true, "note": "An agent server and a full GUI server." },
+        "headless": { "v": true },
+        "acp": { "v": true },
+        "mcp": { "v": true },
+        "selfhost": { "v": true },
+        "license": "MIT (core)",
+        "byo": "Any LLM, plus Claude Code, Codex and Gemini over ACP",
+        "interfaces": ["CLI", "Web GUI", "Web TUI", "Cloud", "ACP server and client"],
+        "approvals": "Confirmation mode and a security analyzer",
+        "checked": "2026-10-01"
+      },
+      "sources": [
+        { "label": "OpenHands on GitHub", "href": "https://github.com/OpenHands/OpenHands" },
+        { "label": "March 2026 product update", "href": "https://www.openhands.dev/blog/openhands-product-update---march-2026" },
+        { "label": "CLI web interface", "href": "https://docs.openhands.dev/openhands/usage/cli/web-interface" },
+        { "label": "Use any agent over ACP", "href": "https://www.openhands.dev/blog/use-any-coding-agent-in-openhands-with-acp" },
+        { "label": "Browser Use (SDK)", "href": "https://docs.openhands.dev/sdk/guides/agent-browser-use" }
+      ]
+    },
+    {
+      "slug": "hermes-agent",
+      "title": "Hermes Agent + Workspace",
+      "summary": "Self-improving agent from Nous Research (skills, memory, a learning loop) plus a community web command center.",
+      "take": "More opinionated than a pure harness because the learning loop is the product. It is one of the few entries that pairs a web UI with browser control that is documented for headless Linux hosts.",
+      "facts": {
+        "type": "Agent + UI shell",
+        "org": "Nous Research, with a community web UI",
+        "harness": 7.5,
+        "plan": { "v": 2, "text": "Command", "note": "/plan [task] writes a Markdown implementation plan to .hermes/plans/ without executing anything. It is a one-shot command rather than a persistent mode toggle; an open issue asks for a config-level plan mode." },
+        "web": { "v": 3, "text": "Native + remote", "note": "Hermes Workspace is the web UI (:3000) over the agent gateway (:8642) and the dashboard (:9119), installable as a PWA. It is a community project, not made by Nous Research." },
+        "browser": { "v": 3, "text": "Built-in, headless-ready", "note": "Built-in browser tools use local headless Chromium through agent-browser, with optional real-profile browsing and Browser Use or other cloud backends. Local browsing works on headless hosts with no Chrome at all. A headed browser can be watched live over VNC (noVNC on :6080). /browser connect is CLI-only." },
+        "server": { "v": true, "note": "The gateway exposes an OpenAI-style /v1/chat/completions endpoint." },
+        "headless": { "v": true },
+        "acp": { "v": true },
+        "mcp": { "v": true },
+        "selfhost": { "v": true },
+        "license": "MIT",
+        "byo": "Bring your own models",
+        "interfaces": ["TUI", "Web", "Desktop", "Messaging", "ACP (stdio)"],
+        "approvals": "/approvals manual, smart or off; /yolo skips dangerous-command prompts",
+        "checked": "2026-10-01"
+      },
+      "sources": [
+        { "label": "Slash commands", "href": "https://hermes-agent.nousresearch.com/docs/reference/slash-commands" },
+        { "label": "Browser automation", "href": "https://hermes-agent.nousresearch.com/docs/user-guide/features/browser" },
+        { "label": "Hermes Workspace", "href": "https://github.com/outsourc-e/hermes-workspace" },
+        { "label": "ACP docs", "href": "https://hermes-agent.nousresearch.com/docs/user-guide/features/acp" },
+        { "label": "Plan-mode issue", "href": "https://github.com/NousResearch/hermes-agent/issues/20616" }
+      ]
+    },
+    {
+      "slug": "kimi-code-cli",
+      "title": "Kimi Code CLI",
+      "summary": "Terminal coding agent tuned for Kimi models, with a built-in web UI, ACP and MCP.",
+      "take": "The reference plan mode in this directory, and it ships a web UI too. Browser control is the weak spot for server setups: the official extension targets desktop Chrome or Edge on macOS or Windows.",
+      "facts": {
+        "type": "Agent harness",
+        "org": "Moonshot AI",
+        "harness": 7.5,
+        "plan": { "v": 4, "text": "Best-in-class", "note": "Shift-Tab or /plan; kimi --plan starts in plan mode. The agent outputs a plan and pauses so you can approve, reject or revise it. Leaving plan mode needs confirmation, and writes to plan files do not prompt." },
+        "web": { "v": 2, "text": "Native", "note": "kimi web (an alias for kimi server run --open) starts a local server and opens a browser UI. Sessions and data stay on your machine." },
+        "browser": { "v": 2, "text": "First-party, desktop-bound", "note": "An official Kimi Code plugin plus the Kimi Browser Extension drive your everyday Chrome or Edge, with your logins and cookies. The extension's listed requirements are macOS or Windows with Chrome or Edge, so it does not cover a headless Linux server." },
+        "server": { "v": true, "note": "kimi server run starts the local server, and kimi acp starts an ACP agent." },
+        "headless": { "v": true },
+        "acp": { "v": true },
+        "mcp": { "v": true },
+        "selfhost": { "v": true },
+        "license": "Apache-2.0",
+        "byo": "Kimi-first, OpenAI-compatible",
+        "interfaces": ["TUI", "Web", "ACP", "VS Code"],
+        "approvals": "Always Ask (default), Ask When Needed, Never Ask",
+        "checked": "2026-10-01"
+      },
+      "sources": [
+        { "label": "Interaction guide", "href": "https://www.kimi.com/code/docs/en/kimi-code-cli/guides/interaction.html" },
+        { "label": "Web guide", "href": "https://www.kimi.com/code/docs/en/kimi-code-cli/guides/web.html" },
+        { "label": "Plugins", "href": "https://www.kimi.com/code/docs/en/kimi-code-cli/customization/plugins.html" },
+        { "label": "Kimi Browser Extension", "href": "https://www.kimi.com/en/help/kimi-webbridge/kimi-webbridge-introduction" },
+        { "label": "Kimi CLI on GitHub", "href": "https://github.com/MoonshotAI/kimi-cli" }
+      ]
+    },
+    {
+      "slug": "minimax-code",
+      "title": "MiniMax Code",
+      "summary": "MiniMax's coding agent: an open-source terminal CLI (mcode) plus a closed desktop app, and the first home of M3.1-Flash-Preview.",
+      "take": "On paper it sits close to Kimi: vendor-tuned, but with bring-your-own providers, ACP and MCP. M3.1-Flash-Preview is currently only available through Token Plan and MiniMax Code, so the newest model ties you to their tool.",
+      "facts": {
+        "type": "Agent harness",
+        "org": "MiniMax",
+        "harness": 7.5,
+        "plan": { "v": 3, "text": "Native toggle", "note": "Shift+Tab or /plan on | off | status | view. Plan mode is independent of the permission mode, and ACP hosts can handle plan capabilities. No approve-or-revise gate is documented, so it scores below Kimi." },
+        "web": { "v": 0, "text": "None", "note": "No web UI or HTTP server. The desktop app offers Remote Control through messaging, so you can check progress and approve requests from a phone, but that is not a browser UI." },
+        "browser": { "v": 2, "text": "Built-in (desktop app)", "note": "The desktop app has a built-in browser panel for web pages and local HTML artifacts. The CLI docs say browser and desktop panels appear only when the host provides them." },
+        "server": { "v": false, "note": "mcode acp runs over stdin/stdout for editors, and mcode exec is headless with text, json or stream-json output." },
+        "headless": { "v": true },
+        "acp": { "v": true },
+        "mcp": { "v": true },
+        "selfhost": { "v": true },
+        "license": "MIT (CLI); desktop app closed",
+        "byo": "MiniMax-first; bring-your-own OpenAI- or Anthropic-style endpoints",
+        "interfaces": ["TUI", "Headless", "ACP", "Desktop (closed)", "Remote Control"],
+        "approvals": "Ask, Auto (risk-classified), Full access; Off for headless automation. Alt+M in the TUI.",
+        "checked": "2026-10-01"
+      },
+      "sources": [
+        { "label": "Pandaily on M3.1-Flash-Preview", "href": "https://pandaily.com/minimax-m3-1-flash-preview-coding-model-minimax-code" },
+        { "label": "minimax-code on GitHub", "href": "https://github.com/MiniMax-AI/minimax-code" },
+        { "label": "CLI features", "href": "https://agent.minimax.io/docs/cli/features" },
+        { "label": "Desktop built-in browser", "href": "https://agent.minimax.io/docs/code/desktop/browser" },
+        { "label": "Model availability", "href": "https://platform.minimax.io/docs/guides/text-generation" }
+      ]
+    },
+    {
+      "slug": "grok-build",
+      "title": "Grok Build",
+      "summary": "xAI's open-source coding agent harness with a full-screen TUI, headless mode and ACP.",
+      "take": "It has a real plan mode, contrary to early write-ups. Wrap it in bb or AionUi over ACP if you want a web front end.",
+      "facts": {
+        "type": "Agent harness",
+        "org": "xAI",
+        "harness": 7.5,
+        "plan": { "v": 3, "text": "Native toggle", "note": "Shift+Tab cycles Normal, Plan and Always-approve." },
+        "web": { "v": 0, "text": "None", "note": "TUI, headless (-p) and ACP only. There is no built-in web UI or HTTP server. Run it over SSH or tmux, or wrap headless calls." },
+        "browser": { "v": 1, "text": "Plugin", "note": "Browser Use publishes a Grok plugin (grok plugin install browser-use@browser-use, an MCP server plus a skill). Coverage of the launch reports that it can drive your local Chrome with its saved logins or an isolated Browser Use cloud browser." },
+        "server": { "v": false, "note": "No OpenCode-style server; ACP over stdio is for editors." },
+        "headless": { "v": true },
+        "acp": { "v": true },
+        "mcp": { "v": true },
+        "selfhost": { "v": true },
+        "license": "Apache-2.0",
+        "byo": "Grok-first, custom base_url",
+        "interfaces": ["TUI", "Headless", "ACP"],
+        "approvals": "Normal, Plan and Always-approve",
+        "checked": "2026-10-01"
+      },
+      "sources": [
+        { "label": "Announcement", "href": "https://x.ai/news/grok-build-cli" },
+        { "label": "Docs", "href": "https://docs.x.ai/build/overview" },
+        { "label": "Plan mode docs", "href": "https://docs.x.ai/build/features/plan-mode" },
+        { "label": "Browser Use plugins", "href": "https://github.com/browser-use/plugins" },
+        { "label": "AIbase coverage of the browser plugin", "href": "https://www.aibase.com/news/30586" },
+        { "label": "grok-build on GitHub", "href": "https://github.com/xai-org/grok-build" }
+      ]
+    },
+    {
+      "slug": "agent-zero",
+      "title": "Agent Zero",
+      "summary": "Dockerized agent framework with its own Linux desktop, browser, document cowork, projects and plugins.",
+      "take": "Autonomous by design; constrain it with agent profiles and tool permissions if you want tighter control. It is the clearest all-in-one match for a self-hosted web UI plus browser use.",
+      "facts": {
+        "type": "Agent framework",
+        "org": "agent0ai",
+        "harness": 7.5,
+        "plan": { "v": 1, "text": "Prompt / plugin", "note": "No plan toggle. You ask for Markdown plans and TODOs, and the Agent Harness plugin adds structured profiles for risky multi-step work." },
+        "web": { "v": 3, "text": "Web-first", "note": "The primary interface is the Web UI (localhost:<PORT>, or behind a reverse proxy). The a0 CLI connector attaches a terminal to a running instance." },
+        "browser": { "v": 3, "text": "Built-in + live view", "note": "A built-in Browser in the Web UI's Canvas can open pages, click, type, upload files and take screenshots. The default browser runs inside the Docker container. Optional Bring Your Own Browser drives Chrome, Edge or Brave on your own machine through the A0 CLI connector." },
+        "server": { "v": true, "note": "Runs as a containerised web service." },
+        "headless": { "v": true },
+        "acp": { "v": false },
+        "mcp": { "v": true },
+        "selfhost": { "v": true },
+        "license": "Custom (see repository)",
+        "byo": "Configurable model providers",
+        "interfaces": ["Web", "CLI connector", "In-container desktop"],
+        "approvals": "Not documented as modes",
+        "checked": "2026-10-01"
+      },
+      "sources": [
+        { "label": "Agent Zero on GitHub", "href": "https://github.com/agent0ai/agent-zero" },
+        { "label": "Browser docs", "href": "https://www.agent-zero.ai/p/docs/browser/" },
+        { "label": "A0 CLI connector", "href": "https://www.agent-zero.ai/p/docs/a0-cli-connector/" },
+        { "label": "Agent Harness plugin", "href": "https://www.agent-zero.ai/p/plugins/agent_harness/" }
+      ]
+    },
+    {
+      "slug": "codex",
+      "title": "Codex",
+      "summary": "OpenAI's coding agent: an open-source CLI, IDE extension, the ChatGPT desktop app and Codex Cloud on chatgpt.com/codex.",
+      "take": "The September 29, 2026 DevDay update adds persistent, shareable cloud environments and a refreshed CLI with voice and an /agents view. None of it gives you a rich web UI on your own hardware. There is no native ACP support.",
+      "facts": {
+        "type": "Agent harness",
+        "org": "OpenAI",
+        "harness": 7,
+        "plan": { "v": 3, "text": "Native toggle", "note": "/plan or Shift+Tab. The agent reads, searches and asks clarifying questions, but does not edit files or run mutating commands until you approve the plan." },
+        "web": { "v": 1, "text": "SaaS only", "note": "chatgpt.com/codex is a rich web UI, but tasks run only on OpenAI-managed cloud machines. Remote control of your own Mac or Windows PC works only from the ChatGPT mobile app, and Linux is not listed. codex app-server is experimental JSON-RPC over WebSocket with no browser UI; third-party bridges exist." },
+        "browser": { "v": 2, "text": "Built-in (desktop app)", "note": "Browser Use works through the in-app browser in the ChatGPT desktop app, or through Chrome with the ChatGPT Chrome extension. OpenAI's documentation does not describe it for the CLI or for self-hosted servers." },
+        "server": { "v": true, "note": "codex app-server --listen ws://IP:PORT (experimental JSON-RPC); the TUI can attach with codex --remote. It is a protocol, not a web page." },
+        "headless": { "v": true },
+        "acp": { "v": false },
+        "mcp": { "v": true },
+        "selfhost": { "v": true },
+        "license": "Apache-2.0 (CLI)",
+        "byo": "OpenAI-first; custom providers and --oss local models",
+        "interfaces": ["TUI", "Headless (exec)", "IDE", "Desktop app", "Cloud web", "Mobile remote", "App server"],
+        "approvals": "Approval and sandbox modes (read-only, workspace-write, full access)",
+        "checked": "2026-10-01"
+      },
+      "sources": [
+        { "label": "TechCrunch on the DevDay update", "href": "https://techcrunch.com/2026/09/29/openai-gives-codex-reusable-cloud-environments-that-work-across-devices/" },
+        { "label": "Codex Cloud help", "href": "https://help.openai.com/en/articles/20001545-using-codex-cloud" },
+        { "label": "ChatGPT Work and Codex", "href": "https://help.openai.com/en/articles/20001275-chatgpt-work-and-codex" },
+        { "label": "Browser and computer use admin docs", "href": "https://help.openai.com/en/articles/20001510-manage-browser-and-computer-use-in-your-enterprise-workspace" },
+        { "label": "App server", "href": "https://www.codex-docs.com/en/docs/app-server" },
+        { "label": "Codex on GitHub", "href": "https://github.com/openai/codex" }
+      ]
+    },
+    {
+      "slug": "aider",
+      "title": "Aider",
+      "summary": "Terminal pair programmer wired into git; a thin, opinionated layer around models.",
+      "take": "No tool or MCP ecosystem. The harness is mostly prompt, diff and git logic.",
+      "facts": {
+        "type": "CLI tool",
+        "org": "Aider-AI",
+        "harness": 6.5,
+        "plan": { "v": 2, "text": "Chat modes", "note": "/ask (no edits) and architect mode (one model plans, an editor model applies the changes) come close to plan/code. Switch per message or with /chat-mode." },
+        "web": { "v": 1, "text": "Experimental", "note": "aider --browser launches an experimental browser UI." },
+        "browser": { "v": 0, "text": "Fetch only", "note": "/web scrapes a URL into the chat, using Playwright if it is installed. It does not drive a browser." },
+        "server": { "v": false, "note": "No server or API mode." },
+        "headless": { "v": true },
+        "acp": { "v": false },
+        "mcp": { "v": false },
+        "selfhost": { "v": true },
+        "license": "Apache-2.0",
+        "byo": "Almost any model",
+        "interfaces": ["CLI", "Browser (experimental)"],
+        "approvals": "Auto-commits via git; --yes skips prompts",
+        "checked": "2026-10-01"
+      },
+      "sources": [
+        { "label": "Chat modes", "href": "https://aider.chat/docs/usage/modes.html" },
+        { "label": "Browser mode", "href": "https://aider.chat/docs/usage/browser.html" },
+        { "label": "Images and web pages", "href": "https://aider.chat/docs/usage/images-urls.html" }
+      ]
+    },
+    {
+      "slug": "open-design",
+      "title": "Open Design",
+      "summary": "Open-source Claude Design alternative; it launches coding agents or is consumed by them through skills, CLI and MCP.",
+      "take": "Harness-y under the hood (runtime adapters for agents), but its identity is the design product.",
+      "facts": {
+        "type": "Design app + meta",
+        "org": "nexu-io",
+        "harness": 5.5,
+        "plan": { "v": 0, "text": "None", "note": "No plan mode is documented." },
+        "web": { "v": 2, "text": "Native", "note": "A web app that runs from source with tools-dev or from Docker (127.0.0.1:7456). LAN exposure is opt-in." },
+        "browser": { "v": 1, "text": "Via skill", "note": "An agent-browser CLI skill attaches to an existing Chrome DevTools Protocol endpoint. Remote or headless setups are not documented." },
+        "server": { "v": true, "note": "A local Express daemon with /api/* endpoints." },
+        "headless": { "v": false },
+        "acp": { "v": null },
+        "mcp": { "v": true },
+        "selfhost": { "v": true },
+        "license": "Apache-2.0",
+        "byo": "Agents",
+        "interfaces": ["Web", "Desktop", "MCP"],
+        "approvals": "Read-only by default",
+        "checked": "2026-10-01"
+      },
+      "sources": [
+        { "label": "Open Design on GitHub", "href": "https://github.com/nexu-io/open-design" },
+        { "label": "agent-browser skill", "href": "https://tessl.io/registry/skills/github/nexu-io/open-design/agent-browser" }
+      ]
+    },
+    {
+      "slug": "bolt-diy",
+      "title": "bolt.diy",
+      "summary": "Self-hostable in-browser full-stack app builder; pick any LLM per prompt.",
+      "take": "Great for prototypes; not a general agent harness.",
+      "facts": {
+        "type": "App builder",
+        "org": "StackBlitz Labs",
+        "harness": 5,
+        "plan": { "v": 0, "text": "None", "note": "bolt.diy has no plan mode (project-plan documents are on its roadmap). Plan Mode exists only in the commercial bolt.new." },
+        "web": { "v": 3, "text": "Web-first", "note": "It is a web app (localhost:5173, Docker or Cloudflare Pages)." },
+        "browser": { "v": 0, "text": "None documented", "note": "No agent browser control is documented. Generated apps run and preview inside an in-browser WebContainer." },
+        "server": { "v": false, "note": "No separate API or server mode." },
+        "headless": { "v": false },
+        "acp": { "v": false },
+        "mcp": { "v": null },
+        "selfhost": { "v": true },
+        "license": "MIT",
+        "byo": "20+ providers",
+        "interfaces": ["Web"],
+        "approvals": "None",
+        "checked": "2026-10-01"
+      },
+      "sources": [
+        { "label": "bolt.diy on GitHub", "href": "https://github.com/stackblitz-labs/bolt.diy" },
+        { "label": "bolt.new Plan Mode", "href": "https://support.bolt.new/best-practices/plan-mode" }
+      ]
+    },
+    {
+      "slug": "monica",
+      "title": "Monica",
+      "summary": "Closed SaaS assistant (extension, desktop, mobile) that bundles frontier models, agents and a browser operator.",
+      "take": "The least harness-y entry: you cannot swap in your own model or wire it into your own infrastructure.",
+      "facts": {
+        "type": "Consumer product",
+        "org": "Monica.im",
+        "harness": 2.5,
+        "plan": { "v": 0, "text": "None", "note": "No user-facing plan mode." },
+        "web": { "v": 1, "text": "SaaS only", "note": "Web and extension, but cloud-hosted. You cannot point a browser at your own host." },
+        "browser": { "v": 2, "text": "Extension (desktop browser)", "note": "Monica Agent includes a Browser Operator that automates tasks in your own browser through the extension. It is a hosted product and not self-hostable." },
+        "server": { "v": false, "note": "No self-hosted server." },
+        "headless": { "v": false },
+        "acp": { "v": false },
+        "mcp": { "v": null },
+        "selfhost": { "v": false },
+        "license": "Proprietary",
+        "byo": "No, only their catalogue",
+        "interfaces": ["Extension", "Web", "Desktop", "Mobile"],
+        "approvals": "Not applicable",
+        "checked": "2026-10-01"
+      },
+      "sources": [
+        { "label": "monica.im", "href": "https://monica.im/" },
+        { "label": "Monica Agent help", "href": "https://monica.im/help/Features/AI-Agent/Monica_Agent" },
+        { "label": "Chrome Web Store listing", "href": "https://chromewebstore.google.com/detail/monica-all-in-one-ai-assi/ofpnmcalabcbjgholdjcjblkibolbppb?hl=en" }
+      ]
+    }
+  ]
+}

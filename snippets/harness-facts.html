@@ -1,0 +1,43 @@
+<!--
+  Harness facts, schema v1. Paste this whole block into ONE Ghost HTML card.
+  Edit only the Value and Notes cells. Keep every data-field, every data-v and the three cells per row.
+  Scales (put the number in data-v, put a short human label in the cell text):
+    plan: 0 = None | 1 = Inherited from a wrapped agent, prompt-only, or a workaround | 2 = One-shot command or chat mode | 3 = Native Plan/Build toggle | 4 = Native toggle with an approve-or-revise gate
+    web: 0 = None | 1 = Experimental, or a vendor-cloud web UI only | 2 = Native web UI you can self-host | 3 = Web-first, or built-in remote access
+    browser: 0 = None (fetching or scraping a page does not count) | 1 = Add-on you wire up yourself (MCP server, community plugin) | 2 = First-party, but tied to a desktop app or desktop browser | 3 = First-party and documented for headless or remote hosts
+    harness: 0 to 10, one decimal allowed (editorial score).
+    server, headless, acp, mcp, selfhost: data-v is yes, no or unknown.
+  Hints:
+    type: Agent harness, Meta-harness, Platform, App builder…
+    org: Company or project that makes it.
+    harness: Editorial score: how much it is orchestration around swappable models or agents.
+    interfaces: Comma-separated: TUI, Web, Desktop, ACP…
+    checked: YYYY-MM-DD. List sources in the Notes cell.
+  Unknown is a valid answer. Put source links in the Notes cells.
+-->
+<section data-harness-facts="1" aria-label="Harness facts">
+  <h2>Facts at a glance</h2>
+  <p>These values feed the comparison matrix. Unknown means the answer has not been verified yet.</p>
+  <table>
+    <caption>Facts read by the comparison matrix</caption>
+    <thead><tr><th scope="col">Property</th><th scope="col">Value</th><th scope="col">Notes and sources</th></tr></thead>
+    <tbody>
+      <tr data-field="type"><th scope="row">Type</th><td>Unknown</td><td></td></tr>
+      <tr data-field="org"><th scope="row">Maker</th><td>Unknown</td><td></td></tr>
+      <tr data-field="harness"><th scope="row">Harness-y score (0–10)</th><td data-v="unknown">Unknown</td><td></td></tr>
+      <tr data-field="plan"><th scope="row">Plan mode</th><td data-v="unknown">Unknown</td><td></td></tr>
+      <tr data-field="web"><th scope="row">Self-hosted web UI</th><td data-v="unknown">Unknown</td><td></td></tr>
+      <tr data-field="browser"><th scope="row">Browser use</th><td data-v="unknown">Unknown</td><td></td></tr>
+      <tr data-field="server"><th scope="row">Server or API mode</th><td data-v="unknown">Unknown</td><td></td></tr>
+      <tr data-field="headless"><th scope="row">Headless or scripted use</th><td data-v="unknown">Unknown</td><td></td></tr>
+      <tr data-field="acp"><th scope="row">Agent Client Protocol (ACP)</th><td data-v="unknown">Unknown</td><td></td></tr>
+      <tr data-field="mcp"><th scope="row">Model Context Protocol (MCP)</th><td data-v="unknown">Unknown</td><td></td></tr>
+      <tr data-field="selfhost"><th scope="row">Self-hostable</th><td data-v="unknown">Unknown</td><td></td></tr>
+      <tr data-field="license"><th scope="row">License</th><td>Unknown</td><td></td></tr>
+      <tr data-field="byo"><th scope="row">Models and providers</th><td>Unknown</td><td></td></tr>
+      <tr data-field="interfaces"><th scope="row">Interfaces</th><td>Unknown</td><td></td></tr>
+      <tr data-field="approvals"><th scope="row">Approvals and autonomy</th><td>Unknown</td><td></td></tr>
+      <tr data-field="checked"><th scope="row">Last verified</th><td>Unknown</td><td></td></tr>
+    </tbody>
+  </table>
+</section>

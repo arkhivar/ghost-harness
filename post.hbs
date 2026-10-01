@@ -1,0 +1,58 @@
+{{!< default}}
+
+{{#post}}
+<main id="main">
+    <article class="article {{post_class}}">
+        <header class="wrap article-header">
+            {{#has tag="#harness"}}
+                <a class="back-link" href="{{@site.url}}#matrix">&larr; All harnesses</a>
+            {{else}}
+                <a class="back-link" href="{{@site.url}}">&larr; {{@site.title}}</a>
+            {{/has}}
+            <h1 class="article-title">{{title}}</h1>
+            {{#if custom_excerpt}}<p class="lede article-excerpt">{{custom_excerpt}}</p>{{/if}}
+            <p class="article-meta">
+                {{#primary_author}}<span>{{name}}</span><span aria-hidden="true">·</span>{{/primary_author}}
+                <time datetime="{{date format="YYYY-MM-DD"}}">{{date format="D MMM YYYY"}}</time>
+                <span aria-hidden="true">·</span>
+                <span>{{reading_time}}</span>
+            </p>
+            {{!-- Filled by post-facts.js from the facts block further down. Stays hidden without JavaScript. --}}
+            <div class="facts-strip" data-facts-strip hidden></div>
+        </header>
+
+        {{#if feature_image}}
+            <figure class="wrap article-feature">
+                <img src="{{img_url feature_image size="xl"}}" alt="{{#if feature_image_alt}}{{feature_image_alt}}{{else}}{{title}}{{/if}}" fetchpriority="high">
+                {{#if feature_image_caption}}<figcaption>{{{feature_image_caption}}}</figcaption>{{/if}}
+            </figure>
+        {{/if}}
+
+        <div class="gh-content gh-canvas article-body">
+            {{content}}
+        </div>
+
+        {{#if tags}}
+            <nav class="wrap article-tags" aria-label="Topics">
+                {{#foreach tags}}<a href="{{url}}">{{name}}</a>{{/foreach}}
+            </nav>
+        {{/if}}
+    </article>
+
+    {{#get "posts" filter="tag:hash-harness+id:-{{id}}" limit="4" order="published_at desc"}}
+        {{#if posts}}
+            <section class="wrap more" aria-labelledby="more-title">
+                <h2 id="more-title" class="section-title">More from the directory</h2>
+                <ul class="post-list">{{#foreach posts}}{{> "post-card"}}{{/foreach}}</ul>
+                <p><a class="text-link" href="{{@site.url}}#matrix">Open the comparison matrix &rarr;</a></p>
+            </section>
+        {{/if}}
+    {{/get}}
+
+    {{#if comments}}
+        <section class="wrap discussion" id="discussion" aria-label="Discussion">
+            {{comments title="Discussion"}}
+        </section>
+    {{/if}}
+</main>
+{{/post}}

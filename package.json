@@ -1,0 +1,97 @@
+{
+  "name": "ghost-harness",
+  "description": "A Ghost theme for an AI agent harness directory: one post per harness, one sortable and filterable comparison matrix on the homepage.",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "author": {
+    "name": "arkhivar",
+    "email": "190232018+arkhivar@users.noreply.github.com",
+    "url": "https://github.com/arkhivar"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arkhivar/ghost-harness.git"
+  },
+  "keywords": [
+    "ghost",
+    "ghost-theme"
+  ],
+  "engines": {
+    "ghost": ">=6.0.0"
+  },
+  "scripts": {
+    "test": "node --test \"tests/*.test.mjs\"",
+    "gscan": "gscan .",
+    "snippet": "node scripts/build-snippet.mjs",
+    "snippet:check": "node scripts/build-snippet.mjs --check",
+    "check": "npm test && npm run snippet:check && npm run gscan",
+    "seed": "node scripts/seed.mjs",
+    "lint:facts": "node scripts/lint.mjs",
+    "pack": "node scripts/pack.mjs"
+  },
+  "config": {
+    "posts_per_page": 12,
+    "card_assets": true,
+    "image_sizes": {
+      "xxs": {
+        "width": 30
+      },
+      "xs": {
+        "width": 100
+      },
+      "s": {
+        "width": 300
+      },
+      "m": {
+        "width": 600
+      },
+      "l": {
+        "width": 1000
+      },
+      "xl": {
+        "width": 2000
+      }
+    },
+    "custom": {
+      "color_scheme": {
+        "type": "select",
+        "options": [
+          "System",
+          "Light",
+          "Dark"
+        ],
+        "default": "System",
+        "description": "Colour scheme before a visitor picks one with the toggle."
+      },
+      "matrix_heading": {
+        "type": "text",
+        "default": "Which harness fits how you work?",
+        "group": "homepage",
+        "description": "Headline above the matrix."
+      },
+      "matrix_intro": {
+        "type": "text",
+        "default": "A sortable comparison of AI agent harnesses. Every row links to a write-up with sources.",
+        "group": "homepage",
+        "description": "One or two sentences under the headline."
+      },
+      "show_latest_notes": {
+        "type": "boolean",
+        "default": true,
+        "group": "homepage",
+        "description": "Show the latest regular posts below the matrix."
+      },
+      "footer_note": {
+        "type": "text",
+        "default": "Scores are editorial and every fact links to a source. Found a mistake? Say so in the comments.",
+        "description": "Short line in the footer."
+      }
+    }
+  },
+  "devDependencies": {
+    "gscan": "^6.6.1",
+    "jsdom": "^30.1.1"
+  }
+}

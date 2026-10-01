@@ -1,0 +1,11 @@
+{{!< default}}
+
+<main id="main" class="wrap archive">
+    <header class="archive-header">
+        <p class="eyebrow">Topic</p>
+        <h1 class="archive-title">{{tag.name}}</h1>
+        {{#if tag.description}}<p class="lede">{{tag.description}}</p>{{/if}}
+    </header>
+    <ul class="post-list">{{#foreach posts}}{{> "post-card"}}{{/foreach}}</ul>
+    {{pagination}}
+</main>

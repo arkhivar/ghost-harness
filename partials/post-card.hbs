@@ -1,0 +1,8 @@
+<li class="post-card">
+    <h3 class="post-card-title"><a href="{{url}}">{{title}}</a></h3>
+    <p class="post-card-excerpt">{{#if custom_excerpt}}{{custom_excerpt}}{{else}}{{excerpt words="32"}}{{/if}}</p>
+    <p class="post-card-meta">
+        <time datetime="{{date format="YYYY-MM-DD"}}">{{date format="D MMM YYYY"}}</time>
+        {{#if primary_tag}}<span aria-hidden="true">·</span><a href="{{primary_tag.url}}">{{primary_tag.name}}</a>{{/if}}
+    </p>
+</li>
