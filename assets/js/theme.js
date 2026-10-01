@@ -1,4 +1,4 @@
-// Colour scheme toggle. The initial scheme is resolved by an inline script in default.hbs.
+// Color scheme toggle. The initial scheme is resolved by an inline script in default.hbs.
 
 const root = document.documentElement;
 const toggle = document.querySelector("[data-theme-toggle]");
@@ -6,7 +6,7 @@ const toggle = document.querySelector("[data-theme-toggle]");
 function describe() {
     if (!toggle) return;
     const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-    toggle.setAttribute("aria-label", `Switch to the ${next} colour scheme`);
+    toggle.setAttribute("aria-label", `Switch to the ${next} color scheme`);
 }
 
 toggle?.addEventListener("click", () => {

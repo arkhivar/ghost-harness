@@ -24,7 +24,7 @@ export const SCALES = Object.freeze({
         "Web-first, or built-in remote access",
     ],
     browser: [
-        "None (fetching or scraping a page does not count)",
+        "None (just fetching a page does not count)",
         "Add-on you wire up yourself (MCP server, community plugin)",
         "First-party, but tied to a desktop app or desktop browser",
         "First-party and documented for headless or remote hosts",
